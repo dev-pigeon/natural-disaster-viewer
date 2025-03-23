@@ -6,7 +6,6 @@ OUTPUT_FILE_PATH = "../data/us_disasters_clean.json"
 INPUT_FILE_PATH = "../data/us_disaster_declarations.csv"
 
 
-
 def createJsonEntry(type, begin_date, end_date, fips, id):
     entry = {
         "disaster_type" : type,
@@ -16,6 +15,7 @@ def createJsonEntry(type, begin_date, end_date, fips, id):
         "id" : id,
     }
     return entry
+
 
 try:
     os.remove(OUTPUT_FILE_PATH)
