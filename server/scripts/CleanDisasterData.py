@@ -19,7 +19,7 @@ except Exception as e:
     print(e)
 
 
-def createJsonEntry(type, begin_date, end_date, fips, id):
+def create_json_entry(type, begin_date, end_date, fips, id):
     entry = {
         "disaster_type": type,
         "begin_date": begin_date,
@@ -32,7 +32,7 @@ def createJsonEntry(type, begin_date, end_date, fips, id):
     return entry
 
 
-def updateDictionary(dict, key, value):
+def update_dictionary(dict, key, value):
     prev_list = dict.get(key)
     if prev_list is not None:
         prev_list.append(value)
@@ -84,13 +84,13 @@ def process_lat_lon(lat_raw, lon_raw):
     return lat_token + lat_raw[1:], lon
 
 
-def updateEntriesWithPoints():
+def update_entries_with_points():
     for fips_code in fips_index_dict.keys():
         latitude, longitude = get_fips_centroid(fips_code)
         update_fips_values(latitude, longitude, fips_index_dict.get(fips_code))
 
 
-def readFile():
+def read_file():
     with open(INPUT_FILE_PATH, "r") as file:
         reader = csv.reader(file)
         index = 0
@@ -101,18 +101,18 @@ def readFile():
             fips = line[15]
             if fips[2:] != "000":
                 id = line[22]
-                entry = createJsonEntry(
+                entry = create_json_entry(
                     disaster_type, begin_date, end_date, fips, id)
-                updateDictionary(fips_index_dict, key=fips, value=index)
+                update_dictionary(fips_index_dict, key=fips, value=index)
                 output_objects.append(entry)
                 index += 1
 
 
-def writeFile():
+def write_file():
     with open(OUTPUT_FILE_PATH, 'w') as output_file:
         json.dump(output_objects, output_file, indent=4)
 
 
-readFile()
-updateEntriesWithPoints()
-writeFile()
+read_file()
+update_entries_with_points()
+write_file()
